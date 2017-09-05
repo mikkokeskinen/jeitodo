@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title layout:fragment="title">Jei Todo</title>
+
+        <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+    </head>
+
+    <body>
+        <div class="container">
+            <th:block layout:fragment="content" />
+        </div>
+
+        <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/webjars/popper.js/1.12.5/dist/popper.min.js"></script>
+        <script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+        <th:block layout:fragment="extrascripts" />
+    </body>
+</html>
