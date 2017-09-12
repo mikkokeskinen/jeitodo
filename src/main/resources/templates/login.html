@@ -1,21 +1,29 @@
 <html layout:decorate="~{base.html}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+    <head>
+        <link href="/css/login.css" rel="stylesheet">
+    </head>
     <body>
         <th:block layout:fragment="content">
-            <form th:action="@{/login}" method="POST">
-                <h3 th:text="Welcome"></h3>
-                <br />
 
-                <input type="text" id="email" name="email" th:placeholder="Email" /><br />
-                <input type="password" th:placeholder="Password" id="password" name="password" /><br />
+            <div class="row justify-content-md-center">
+                <div class="col col-sm-6">
+                    <form class="form-signin" th:action="@{/login}" method="POST">
+                        <h2 class="form-signin-heading">Please sign in</h2>
 
-                <div align="center" th:if="${param.error}">
-                    <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
+                        <label for="email">Email address</label>
+                        <input type="text" id="email" name="email" th:placeholder="Email" class="form-control" autofocus /><br />
+                        <label for="password">Password</label>
+                        <input type="password" th:placeholder="Password" id="password" name="password" class="form-control" /><br />
+
+                        <div align="center" th:if="${param.error}">
+                            <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
+                    </form>
                 </div>
-
-                <button name="Submit" value="Login" type="Submit" th:text="Login"></button>
-            </form>
+            </div>
         </th:block>
-
     </body>
 </html>
 
