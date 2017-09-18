@@ -31,6 +31,9 @@ public class Todo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated = new Date();
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date completedAt = new Date();
+
     public Integer getId() {
         return id;
     }
@@ -77,6 +80,14 @@ public class Todo {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public Date getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(Date completedAt) {
+        this.completedAt = completedAt;
     }
 
     public User getUser() {

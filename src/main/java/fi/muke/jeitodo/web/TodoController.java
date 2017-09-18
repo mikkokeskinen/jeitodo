@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -21,30 +23,51 @@ public class TodoController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(path="/add")
-    public @ResponseBody String addNewTodo(Principal userDetails, @RequestParam String title) {
-        String email = userDetails.getName();
-        User user = userRepository.findByEmail(email);
-
-        Todo todo = new Todo();
-        todo.setTitle(title);
-        todo.setUser((User) user);
-        todoRepository.save(todo);
-
-        return "Saved";
-    }
-
     @GetMapping(path = "/")
     public ModelAndView home(Principal userDetails) {
         User user = userRepository.findByEmail(userDetails.getName());
-        List<Todo> todos = todoRepository.findIncompleteForUser(user);
+        List<Todo> incompleteTodos = todoRepository.findIncompleteForUser(user);
+        List<Todo> completeTodos = todoRepository.findCompleteForUser(user);
 
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("user", user);
-        modelAndView.addObject("todos", todos);
+        modelAndView.addObject("incompleteTodos", incompleteTodos);
+        modelAndView.addObject("completeTodos", completeTodos);
         modelAndView.setViewName("todos");
 
         return modelAndView;
+    }
+
+    @PostMapping(path = "/")
+    public String save(HttpServletRequest request, Principal userDetails) {
+        User user = userRepository.findByEmail(userDetails.getName());
+
+        if (request.getParameter("todo_id") != null) {
+            Todo todo = todoRepository.findOne(Integer.parseInt(request.getParameter("todo_id")));
+
+            if (todo.getUser() != user) {
+                throw new ResourceNotFoundException();
+            }
+
+            if (request.getParameter("mark_done") != null) {
+                todo.setCompleted(!todo.isCompleted());
+                todo.setCompletedAt(todo.isCompleted() ? new Date() : null);
+                todoRepository.save(todo);
+            }
+
+            if (request.getParameter("delete") != null) {
+                todoRepository.delete(todo);
+            }
+        }
+
+        if (request.getParameter("title") != null) {
+            Todo todo = new Todo();
+            todo.setTitle(request.getParameter("title"));
+            todo.setUser((User) user);
+            todoRepository.save(todo);
+        }
+
+        return "redirect:/todo/";
     }
 }

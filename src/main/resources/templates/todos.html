@@ -1,30 +1,40 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html layout:decorate="~{base.html}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <title>To do</title>
-        <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+        <title>To dos</title>
+        <link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-        <p th:text="'Todos for ' + ${user.email} + '!'" />
+        <th:block layout:fragment="content">
+            <!--<p th:text="'Todos for ' + ${user.email} + '!'" />-->
+            <form action="" method="post">
+                <div class="row mt-3">
+                    <div class="col-1">
 
-        <main id="todos">
-            <article th:each="todo : ${todos}">
-                <h2 class="title" th:text="${todo.title}">To do Title</h2>
-
-                <div th:if="${todo.created}">
-                    <div class="date">
-                        <i>Created on</i>
-                        <span th:text="${#dates.format(todo.created, 'dd.mm.yyyy HH:mm')}"></span>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="title" class="form-control">
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" name="add" class="btn btn-success">
+                            Add
+                        </button>
                     </div>
                 </div>
+            </form>
+            <br>
+            <main id="todos">
+                <article th:each="todo : ${incompleteTodos}">
+                    <div th:replace="fragments/todo :: todo(${todo})" />
+                </article>
 
-                <p class="content" th:utext="${todo.description}">To do description</p>
-            </article>
-        </main>
+                <th:block th:if="${!completeTodos.empty}">
+                    <h3>Completed todos</h3>
+
+                    <article th:each="todo : ${completeTodos}">
+                        <div th:replace="fragments/todo :: todo(${todo})" />
+                    </article>
+                </th:block>
+            </main>
+        </th:block>
     </body>
-
-    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/webjars/popper.js/1.12.5/dist/popper.min.js"></script>
-    <script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 </html>

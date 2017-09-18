@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <body>
+        <block th:fragment="todo(todo)">
+            <form action="" method="post">
+                <input type="hidden" name="todo_id" th:value="${todo.id}">
+
+                <div class="row todo-item p-2 border border-top-0 border-left-0 border-right-0 align-items-center">
+                    <div class="col-1">
+                        <button type="submit" name="mark_done" href="#" class="btn btn-sm" th:classappend="${todo.completed} ? btn-success : btn-secondary">
+                            <i class="fa fa-check"></i>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <span class="lead" th:text="${todo.title}">
+                            Todo title
+                        </span>
+                        <div class="row">
+                            <div class="col-6 small text-secondary">
+                                Created at
+                                <span th:text="${#dates.format(todo.created, 'dd.mm.yyyy HH:mm')}"></span>
+                            </div>
+                            <div th:if="${todo.completed}" class="col-6 small text-secondary">
+                                Completed at
+                                <span th:text="${#dates.format(todo.completedAt, 'dd.mm.yyyy HH:mm')}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" name="delete" class="btn btn-link">
+                            <i class="fa fa-trash text-danger"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="content" th:utext="${todo.description}">To do
+                    description</p>
+            </form>
+        </block>
+    </body>
+</html>
