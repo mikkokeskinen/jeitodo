@@ -1,25 +1,30 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{base.html}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
     <head>
-        <meta charset="UTF-8" />
         <title>Registration</title>
+        <link href="/css/login.css" rel="stylesheet">
     </head>
     <body>
-        <form th:action="@{/registration}" th:object="${user}" method="post" role="form">
-            <h2>Registration Form</h2>
+        <th:block layout:fragment="content">
+            <div class="row justify-content-md-center">
+                <div class="col col-sm-6">
+                    <form class="form-signin" th:action="@{/registration}" th:object="${user}" method="post" role="form">
+                        <h2 class="form-signin-heading">Registration Form</h2>
 
-            <input type="text" th:field="*{email}" placeholder="Email" />
-            <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label>
+                        <label for="email">Email address</label>
+                        <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Email" />
+                        <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label><br>
 
-            <input type="password" th:field="*{password}" placeholder="Password" />
-            <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></label>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Password" />
+                        <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></label><br>
 
-            <button type="submit" class="btn btn-primary btn-block">
-                Register User
-            </button>
-
-            <span th:utext="${successMessage}"></span>
-
-        </form>
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">
+                            Register User
+                        </button>
+                        <span th:utext="${successMessage}"></span>
+                    </form>
+                </div>
+            </div>
+        </th:block>
     </body>
 </html>
