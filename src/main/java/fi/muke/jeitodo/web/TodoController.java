@@ -17,11 +17,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/todo")
 public class TodoController {
-    @Autowired
-    private TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public TodoController(TodoRepository todoRepository, UserRepository userRepository) {
+        this.todoRepository = todoRepository;
+        this.userRepository = userRepository;
+    }
 
     @GetMapping(path = "/")
     public ModelAndView home(Principal userDetails) {
@@ -64,7 +67,7 @@ public class TodoController {
         if (request.getParameter("title") != null) {
             Todo todo = new Todo();
             todo.setTitle(request.getParameter("title"));
-            todo.setUser((User) user);
+            todo.setUser(user);
             todoRepository.save(todo);
         }
 

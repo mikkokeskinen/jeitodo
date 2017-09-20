@@ -19,8 +19,11 @@ public class JeiErrorController implements ErrorController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private static final String PATH = "/error";
 
-    @Autowired
-    private ErrorAttributes errorAttributes;
+    private final ErrorAttributes errorAttributes;
+
+    public JeiErrorController(ErrorAttributes errorAttributes) {
+        this.errorAttributes = errorAttributes;
+    }
 
     @RequestMapping(value = PATH)
     public ModelAndView error(HttpServletRequest request) {

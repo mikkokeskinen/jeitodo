@@ -16,8 +16,11 @@ import fi.muke.jeitodo.service.UserService;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
