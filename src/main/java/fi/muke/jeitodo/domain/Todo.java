@@ -11,7 +11,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Todo {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     private String title;

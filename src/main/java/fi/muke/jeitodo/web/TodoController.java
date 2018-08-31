@@ -4,10 +4,9 @@ import fi.muke.jeitodo.domain.Todo;
 import fi.muke.jeitodo.domain.TodoRepository;
 import fi.muke.jeitodo.domain.User;
 import fi.muke.jeitodo.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -27,19 +26,16 @@ public class TodoController {
     }
 
     @GetMapping(path = "/")
-    public ModelAndView home(Principal userDetails) {
+    public String home(Model model, Principal userDetails) {
         User user = userRepository.findByEmail(userDetails.getName());
         List<Todo> incompleteTodos = todoRepository.findIncompleteForUser(user);
         List<Todo> completeTodos = todoRepository.findCompleteForUser(user);
 
-        ModelAndView modelAndView = new ModelAndView();
+        model.addAttribute("user", user);
+        model.addAttribute("incompleteTodos", incompleteTodos);
+        model.addAttribute("completeTodos", completeTodos);
 
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("incompleteTodos", incompleteTodos);
-        modelAndView.addObject("completeTodos", completeTodos);
-        modelAndView.setViewName("todos");
-
-        return modelAndView;
+        return "todos";
     }
 
     @PostMapping(path = "/")
@@ -47,20 +43,22 @@ public class TodoController {
         User user = userRepository.findByEmail(userDetails.getName());
 
         if (request.getParameter("todo_id") != null) {
-            Todo todo = todoRepository.findOne(Integer.parseInt(request.getParameter("todo_id")));
+            Todo todo = todoRepository.findById(Integer.parseInt(request.getParameter("todo_id"))).orElse(null);
 
-            if (todo.getUser() != user) {
-                throw new ResourceNotFoundException();
-            }
+            if (todo != null) {
+                if (todo.getUser() != user) {
+                    throw new ResourceNotFoundException();
+                }
 
-            if (request.getParameter("mark_done") != null) {
-                todo.setCompleted(!todo.isCompleted());
-                todo.setCompletedAt(todo.isCompleted() ? new Date() : null);
-                todoRepository.save(todo);
-            }
+                if (request.getParameter("mark_done") != null) {
+                    todo.setCompleted(!todo.isCompleted());
+                    todo.setCompletedAt(todo.isCompleted() ? new Date() : null);
+                    todoRepository.save(todo);
+                }
 
-            if (request.getParameter("delete") != null) {
-                todoRepository.delete(todo);
+                if (request.getParameter("delete") != null) {
+                    todoRepository.delete(todo);
+                }
             }
         }
 
