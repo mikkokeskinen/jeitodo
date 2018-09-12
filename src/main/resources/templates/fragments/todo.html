@@ -14,17 +14,22 @@
                         </button>
                     </div>
                     <div class="col">
-                        <span class="lead" th:text="${todo.title}">
-                            Todo title
-                        </span>
+                        <div class="row">
+                            <div class="col-6 lead" th:text="${todo.title}">
+                                Todo title
+                            </div>
+                            <div class="col-6 small content" th:utext="${todo.description}">
+                                To do description
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-6 small text-secondary">
                                 Created at
-                                <span th:text="${#dates.format(todo.created, 'dd.mm.yyyy HH:mm')}"></span>
+                                <span th:text="${#dates.format(todo.created, 'd.M.yyyy HH:mm')}"></span>
                             </div>
                             <div th:if="${todo.completed}" class="col-6 small text-secondary">
                                 Completed at
-                                <span th:text="${#dates.format(todo.completedAt, 'dd.mm.yyyy HH:mm')}"></span>
+                                <span th:text="${#dates.format(todo.completedAt, 'd.M.yyyy HH:mm')}"></span>
                             </div>
                         </div>
                     </div>
@@ -34,8 +39,6 @@
                         </button>
                     </div>
                 </div>
-                <p class="content" th:utext="${todo.description}">To do
-                    description</p>
             </form>
         </block>
     </body>
