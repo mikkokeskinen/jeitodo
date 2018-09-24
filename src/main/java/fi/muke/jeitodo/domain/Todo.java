@@ -25,14 +25,14 @@ public class Todo {
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created = new Date();
+    private Date created;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updated = new Date();
+    private Date updated;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date completedAt = new Date();
+    private Date completedAt;
 
     public Integer getId() {
         return id;
